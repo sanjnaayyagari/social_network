@@ -2,8 +2,9 @@
 
 social_network = {}
 
+"""
 def create_dict(filename):
-    print("I got the filename:" +filename)
+    print("I got the filename:" + str(filename))
     fileHandle = open(filename, "r")
     count = fileHandle.readline()  # first line is a number
     valueList = []
@@ -48,6 +49,76 @@ def create_dict(filename):
     print(social_network)
 
     fileHandle.close()
+
+"""
+def create_dict(filename):
+    while True:
+        try:
+            print("I got the filename:" + str(filename))
+            fileHandle = open(filename, "r")
+            count = int(fileHandle.readline().strip())
+            break
+
+        except ValueError:
+            filename = input("File is not in the correct format, please try another file: ")
+            continue
+        except FileNotFoundError:
+            filename = input("File doesn't exist, please try again: ")
+            continue
+        except PermissionError:
+            filename = input("Permission to read denied, please try again: ")
+            continue
+    # first line must be a number
+
+        # first line is a number
+    #count = int(fileHandle.readline())
+    valueList = []
+
+    while fileHandle:
+        line = fileHandle.readline()
+        # blank line means end of the file
+        if line == '':
+            break
+        res = line.split(',')
+
+        name1 = res[0].strip()
+        name2 = res[1].strip()
+
+        if name1 in social_network.keys():
+            valueList = social_network.get(name1)
+            valueList.append(name2)
+
+        elif name1 not in social_network.keys():
+            valueList.append(name2)
+
+        social_network[name1] = valueList
+
+        valueList = []
+
+        if name2 != '':
+            if name2 in social_network.keys():
+                valueList = social_network.get(name2)
+                valueList.append(name1)
+            elif name2 not in social_network.keys():
+                valueList.append(name1)
+
+            social_network[name2] = valueList
+
+
+        # print(social_network)
+
+        valueList = []
+
+    for key in social_network.keys():
+        print(key + ": " + str(social_network.get(key)))
+
+    print(social_network)
+
+    fileHandle.close()
+
+
+
+
 
 
 
