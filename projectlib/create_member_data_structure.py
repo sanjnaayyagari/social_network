@@ -1,72 +1,42 @@
 # read a nw_data1 file and create a member dictionary object
 
+
 social_network = {}
+fileHandle = ""
 
-"""
 def create_dict(filename):
-    print("I got the filename:" + str(filename))
-    fileHandle = open(filename, "r")
-    count = fileHandle.readline()  # first line is a number
-    valueList = []
+    #reading the file, checking for all possible errors
 
-    while fileHandle:
-        line = fileHandle.readline()
-        # blank line means end of the file
-        if line == '':
-            break
-        res = line.split(',')
-
-        name1 = res[0].strip()
-        name2 = res[1].strip()
-
-        if name1 in social_network.keys():
-            valueList = social_network.get(name1)
-            valueList.append(name2)
-
-        elif name1 not in social_network.keys():
-            valueList.append(name2)
-
-        social_network[name1] = valueList
-
-        valueList = []
-
-        if name2 != '':
-            if name2 in social_network.keys():
-                valueList = social_network.get(name2)
-                valueList.append(name1)
-            elif name2 not in social_network.keys():
-                valueList.append(name1)
-
-            social_network[name2] = valueList
-
-        # print(social_network)
-
-        valueList = []
-
-    for key in social_network.keys():
-        print(key + ": " + str(social_network.get(key)))
-
-    print(social_network)
-
-    fileHandle.close()
-
-"""
-def create_dict(filename):
     while True:
         try:
             print("I got the filename:" + str(filename))
             fileHandle = open(filename, "r")
             count = int(fileHandle.readline().strip())
-            break
+            while True:
+                lineReader = fileHandle.readline()
+                lineCheckChar = lineReader.replace(" ","").replace("\n","")
+                #print(lineCheckChar)
+                otherChars = lineCheckChar.isalnum()
+                #print(otherChars)
+                lineCheckEntries = lineReader.split(" ")
+                if lineReader == "":
+                    break
+                if len(lineCheckEntries) > 2:
+                    raise Exception
+                if otherChars == False:
+                    raise Exception
 
-        except ValueError:
-            filename = input("File is not in the correct format, please try another file: ")
-            continue
+            break
+        except Exception:
+            filename = input("File is not in the correct format, please try another file")
         except FileNotFoundError:
             filename = input("File doesn't exist, please try again: ")
             continue
         except PermissionError:
             filename = input("Permission to read denied, please try again: ")
+            continue
+        except ValueError:
+            filename = input("File is not in the correct format, please try another file: ")
             continue
     # first line must be a number
 
@@ -74,15 +44,23 @@ def create_dict(filename):
     #count = int(fileHandle.readline())
     valueList = []
 
+
     while fileHandle:
+
         line = fileHandle.readline()
         # blank line means end of the file
         if line == '':
             break
-        res = line.split(',')
+        res = line.split(' ')
+        if len(res) == 1:
+            name1 = res[0].strip()
+            name2 = ""
+        else:
+            name1 = res[0].strip()
+            name2 = res[1].strip()
 
-        name1 = res[0].strip()
-        name2 = res[1].strip()
+
+
 
         if name1 in social_network.keys():
             valueList = social_network.get(name1)
@@ -105,7 +83,7 @@ def create_dict(filename):
             social_network[name2] = valueList
 
 
-        # print(social_network)
+        print(social_network)
 
         valueList = []
 
@@ -115,22 +93,12 @@ def create_dict(filename):
     print(social_network)
 
     fileHandle.close()
-
-
-
-
-
-
-
-
-
+    return social_network
 def getMembers():
     members = []
     for i in social_network:
         members.append(i)
     print("the members are: " + str(members))
-
-
 def getFriends(name):
     friends = social_network.get(name)
     if name not in social_network.keys():
@@ -140,14 +108,9 @@ def getFriends(name):
         print(name + " has no friends")
 
     print(name + " friends are: " + str(friends))
-
-
-def getFriends4All():
+def getFriendsForAll():
     for i in social_network:
         print(str(i) + " friends are: " + str(social_network.get(i)))
-
-
-
 def getCommonFriends(name1, name2):
     friendsForName1 = social_network.get(name1)
     friendsForName2 = social_network.get(name2)
@@ -167,10 +130,6 @@ def getCommonFriends(name1, name2):
     return commonFriendCount
    # print(commonFriends)
     # print(commonFriendCount)
-
-
-
-
 def recommendFriends(name):
     commonFriendCountList = {}
     existingFriends = social_network.get(name)
@@ -192,20 +151,3 @@ def recommendFriends(name):
             print("The recommended friends: " + i)
     #position = val_list.index(mostMutuals)
     #print("The recommended friend is: " + key_list[position])
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

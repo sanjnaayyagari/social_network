@@ -10,10 +10,9 @@ def main():
 
 
 
-
     #cd.getMembers()
     #cd.getFriends("Bob")
-    #cd.getFriends4All()
+    #cd.getFriendsForAll()
     #cd.getCommonFriends("Bob", "Bob")
     #cd.recommendFriends("Mia")
 
